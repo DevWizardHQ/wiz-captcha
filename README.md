@@ -23,37 +23,73 @@ You can install the package via composer:
 composer require devwizardhq/wiz-captcha
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="wiz-captcha-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="wiz-captcha-config"
 ```
 
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="wiz-captcha-views"
-```
-
 ## Usage
 
+### In View
+
 ```php
-$captcha = new DevWizardHQ\Captcha();
-echo $captcha->echoPhrase('Hello, DevWizardHQ!');
+<form method="POST" action="/contact">
+    @csrf
+
+    {!! wiz_captcha_img('default', ['id' => 'captcha-image']) !!}
+
+    <button type="button" onclick="refreshCaptcha()">Refresh</button>
+
+    <input type="text" name="captcha" required autocomplete="off">
+
+    @error('captcha')
+        <div>{{ $message }}</div>
+    @enderror
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+function refreshCaptcha() {
+    document.getElementById('captcha-image').src = "{{ route('wiz-captcha.image') }}?" + Date.now();
+}
+</script>
+```
+
+### Controller
+
+```php
+use DevWizardHQ\Captcha\Rules\CaptchaRule;
+
+$request->validate([
+    'captcha' => ['required', new CaptchaRule],
+]);
+```
+
+### String Rule
+
+```php
+$request->validate([
+    'captcha' => ['required', 'wiz_captcha'],
+]);
+```
+
+### API Rule
+
+```php
+$captcha = wiz_captcha_api('math');
+```
+
+### API Validation
+
+```php
+use DevWizardHQ\Captcha\Rules\CaptchaApiRule;
+
+$request->validate([
+    'captcha_key' => ['required', 'string'],
+    'captcha' => ['required', new CaptchaApiRule($request->captcha_key)],
+]);
 ```
 
 ## Testing

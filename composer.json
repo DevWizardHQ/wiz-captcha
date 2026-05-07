@@ -16,9 +16,14 @@
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.2",
+        "ext-gd": "*",
         "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.0||^12.0||^13.0"
+        "illuminate/contracts": "^11.0||^12.0||^13.0",
+        "illuminate/support": "^11.0||^12.0",
+        "illuminate/cache": "^11.0||^12.0",
+        "illuminate/routing": "^11.0||^12.0",
+        "illuminate/validation": "^11.0||^12.0"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -45,6 +50,9 @@
             "Workbench\\App\\": "workbench/app/"
         }
     },
+    "files": [
+        "src/helpers.php"
+    ],
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
