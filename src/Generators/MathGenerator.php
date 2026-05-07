@@ -14,6 +14,16 @@ class MathGenerator implements ChallengeGenerator
         $max = (int) ($config['max'] ?? 20);
         $operators = $config['operators'] ?? ['+', '-'];
 
+        if ($min > $max) {
+            throw new InvalidArgumentException('CAPTCHA min value cannot be greater than max value.');
+        }
+
+        if (! is_array($operators) || $operators === []) {
+            throw new InvalidArgumentException('CAPTCHA operators cannot be empty.');
+        }
+
+        $operators = array_values($operators);
+
         $a = random_int($min, $max);
         $b = random_int($min, $max);
         $operator = $operators[random_int(0, count($operators) - 1)];

@@ -4,12 +4,17 @@ namespace DevWizardHQ\Captcha\Generators;
 
 use DevWizardHQ\Captcha\CaptchaChallenge;
 use DevWizardHQ\Captcha\Contracts\ChallengeGenerator;
+use InvalidArgumentException;
 
 class NumberGenerator implements ChallengeGenerator
 {
     public function generate(array $config): CaptchaChallenge
     {
         $length = (int) ($config['length'] ?? 5);
+
+        if ($length < 1) {
+            throw new InvalidArgumentException('CAPTCHA length must be at least 1.');
+        }
 
         $text = '';
 

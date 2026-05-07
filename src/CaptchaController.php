@@ -13,7 +13,17 @@ class CaptchaController
             $preset ?? config('wiz-captcha.default', 'default')
         );
 
-        session(['wiz_captcha_key' => $captcha['key']]);
+        $keys = session('wiz_captcha_keys', []);
+        $keys = is_array($keys) ? $keys : [];
+        $keys[] = $captcha['key'];
+
+        session([
+            'wiz_captcha_key' => $captcha['key'],
+            'wiz_captcha_keys' => array_values(array_slice(array_unique(array_filter(
+                $keys,
+                static fn ($key) => is_string($key) && $key !== '',
+            )), -10)),
+        ]);
 
         return response($captcha['image'], 200, [
             'Content-Type' => $captcha['mime'],

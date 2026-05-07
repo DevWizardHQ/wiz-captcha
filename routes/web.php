@@ -3,6 +3,10 @@
 use DevWizardHQ\Captcha\CaptchaController;
 use Illuminate\Support\Facades\Route;
 
+if (! config('wiz-captcha.routes.enabled', true)) {
+    return;
+}
+
 Route::middleware(config('wiz-captcha.routes.middleware', ['web']))
     ->prefix(config('wiz-captcha.routes.prefix', 'captcha'))
     ->group(function () {

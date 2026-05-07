@@ -42,7 +42,10 @@
         "psr-4": {
             "DevWizardHQ\\Captcha\\": "src/",
             "DevWizardHQ\\Captcha\\Database\\Factories\\": "database/factories/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -50,13 +53,10 @@
             "Workbench\\App\\": "workbench/app/"
         }
     },
-    "files": [
-        "src/helpers.php"
-    ],
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse --debug --no-progress",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
         "format": "vendor/bin/pint"

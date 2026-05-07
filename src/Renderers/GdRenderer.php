@@ -17,6 +17,10 @@ class GdRenderer implements ImageRenderer
         $width = (int) ($config['width'] ?? 180);
         $height = (int) ($config['height'] ?? 60);
 
+        if ($width < 1 || $height < 1) {
+            throw new RuntimeException('CAPTCHA image dimensions must be greater than zero.');
+        }
+
         $image = imagecreatetruecolor($width, $height);
 
         if (! $image) {
@@ -31,7 +35,7 @@ class GdRenderer implements ImageRenderer
 
         $this->drawNoise($image, $width, $height, (int) ($config['noise'] ?? 80));
         $this->drawLines($image, $width, $height, (int) ($config['lines'] ?? 5));
-        $this->drawText($image, $challenge->question, $height, $config);
+        $this->drawText($image, $challenge->question, $width, $height, $config);
 
         ob_start();
         imagepng($image);
@@ -77,22 +81,36 @@ class GdRenderer implements ImageRenderer
 
             imageline(
                 $image,
-                random_int(0, $width),
-                random_int(0, $height),
-                random_int(0, $width),
-                random_int(0, $height),
+                random_int(0, $width - 1),
+                random_int(0, $height - 1),
+                random_int(0, $width - 1),
+                random_int(0, $height - 1),
                 $color,
             );
         }
     }
 
-    private function drawText(\GdImage $image, string $text, int $height, array $config): void
+    private function drawText(\GdImage $image, string $text, int $width, int $height, array $config): void
     {
-        $fontSize = (int) ($config['font_size'] ?? 5);
-        $x = 15;
-        $y = (int) (($height / 2) - 8);
+        $fontSize = max(1, min(5, (int) ($config['font_size'] ?? 5)));
+        $characterWidth = imagefontwidth($fontSize);
+        $characterHeight = imagefontheight($fontSize);
+        $length = strlen($text);
 
-        for ($i = 0; $i < strlen($text); $i++) {
+        if ($length === 0) {
+            return;
+        }
+
+        $availableWidth = max($characterWidth, $width - 20);
+        $spacing = $length > 1
+            ? max($characterWidth, min(18, (int) floor(($availableWidth - $characterWidth) / ($length - 1))))
+            : 0;
+        $textWidth = $characterWidth + (($length - 1) * $spacing);
+        $x = max(0, (int) floor(($width - $textWidth) / 2));
+        $y = max(0, min($height - $characterHeight, (int) floor(($height - $characterHeight) / 2)));
+        $jitterX = min(2, max(0, (int) floor(($spacing - $characterWidth) / 2)));
+
+        for ($i = 0; $i < $length; $i++) {
             $color = imagecolorallocate(
                 $image,
                 random_int(0, 90),
@@ -103,8 +121,14 @@ class GdRenderer implements ImageRenderer
             imagestring(
                 $image,
                 $fontSize,
-                $x + ($i * 18) + random_int(-2, 2),
-                $y + random_int(-5, 5),
+                min(
+                    max(0, $x + ($i * $spacing) + random_int(-$jitterX, $jitterX)),
+                    max(0, $width - $characterWidth),
+                ),
+                min(
+                    max(0, $y + random_int(-5, 5)),
+                    max(0, $height - $characterHeight),
+                ),
                 $text[$i],
                 $color,
             );

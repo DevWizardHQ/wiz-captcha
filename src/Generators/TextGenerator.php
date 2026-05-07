@@ -4,13 +4,22 @@ namespace DevWizardHQ\Captcha\Generators;
 
 use DevWizardHQ\Captcha\CaptchaChallenge;
 use DevWizardHQ\Captcha\Contracts\ChallengeGenerator;
+use InvalidArgumentException;
 
 class TextGenerator implements ChallengeGenerator
 {
     public function generate(array $config): CaptchaChallenge
     {
-        $characters = str_split($config['characters'] ?? config('wiz-captcha.characters'));
+        $characters = str_split((string) ($config['characters'] ?? config('wiz-captcha.characters')));
         $length = (int) ($config['length'] ?? 6);
+
+        if ($characters === []) {
+            throw new InvalidArgumentException('CAPTCHA characters cannot be empty.');
+        }
+
+        if ($length < 1) {
+            throw new InvalidArgumentException('CAPTCHA length must be at least 1.');
+        }
 
         $text = '';
 

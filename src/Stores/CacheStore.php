@@ -20,6 +20,7 @@ class CacheStore implements CaptchaStore
     {
         $payload['attempts'] = 0;
         $payload['ttl'] = $ttl;
+        $payload['expires_at'] = time() + $ttl;
 
         $this->cache->put($this->key($id), $payload, $ttl);
     }
@@ -45,8 +46,16 @@ class CacheStore implements CaptchaStore
         }
 
         $record['attempts'] = ($record['attempts'] ?? 0) + 1;
+        $expiresAt = (int) ($record['expires_at'] ?? (time() + (int) ($record['ttl'] ?? 300)));
+        $remainingTtl = $expiresAt - time();
 
-        $this->cache->put($this->key($id), $record, $record['ttl'] ?? 300);
+        if ($remainingTtl <= 0) {
+            $this->forget($id);
+
+            return $record['attempts'];
+        }
+
+        $this->cache->put($this->key($id), $record, $remainingTtl);
 
         return $record['attempts'];
     }
