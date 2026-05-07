@@ -2,9 +2,9 @@
 
 namespace DevWizardHQ\Captcha\Tests;
 
+use DevWizardHQ\Captcha\CaptchaServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use DevWizardHQ\Captcha\CaptchaServiceProvider;
 
 class TestCase extends Orchestra
 {

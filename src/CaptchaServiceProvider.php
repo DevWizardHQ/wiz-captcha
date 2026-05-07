@@ -2,9 +2,9 @@
 
 namespace DevWizardHQ\Captcha;
 
+use DevWizardHQ\Captcha\Commands\CaptchaCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use DevWizardHQ\Captcha\Commands\CaptchaCommand;
 
 class CaptchaServiceProvider extends PackageServiceProvider
 {
