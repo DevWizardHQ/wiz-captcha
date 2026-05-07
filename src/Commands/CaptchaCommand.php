@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace DevWizardHQ\Captcha\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class CaptchaCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'wiz-captcha';
 
     public $description = 'My command';
 
