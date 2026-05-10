@@ -41,8 +41,6 @@ class GdRenderer implements ImageRenderer
         imagepng($image);
         $contents = ob_get_clean();
 
-        imagedestroy($image);
-
         if (! is_string($contents)) {
             throw new RuntimeException('Could not render CAPTCHA image.');
         }
