@@ -2,6 +2,10 @@
 
 All notable changes to `wiz-captcha` will be documented in this file.
 
+## 1.0.1 - 2026-05-10
+
+**Full Changelog**: https://github.com/DevWizardHQ/wiz-captcha/compare/1.0.0...1.0.1
+
 ## 1.0.0 - 2026-05-10
 
 ### What's Changed
