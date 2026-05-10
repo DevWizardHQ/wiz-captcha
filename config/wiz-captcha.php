@@ -35,7 +35,7 @@ return [
 
     'max_attempts' => env('WIZ_CAPTCHA_MAX_ATTEMPTS', 5),
 
-    'case_sensitive' => false,
+    'case_sensitive' => env('WIZ_CAPTCHA_CASE_SENSITIVE', false),
 
     /*
     |--------------------------------------------------------------------------
