@@ -4,10 +4,10 @@
 
 Security updates are provided for the latest stable release of `devwizardhq/wiz-captcha`.
 
-| Version | Supported |
-| --- | --- |
-| Latest stable release | ✅ |
-| Older releases | ❌ |
+| Version               | Supported |
+| --------------------- | --------- |
+| Latest stable release | ✅        |
+| Older releases        | ❌        |
 
 ## Reporting a Vulnerability
 
