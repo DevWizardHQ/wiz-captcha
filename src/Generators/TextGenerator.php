@@ -27,11 +27,13 @@ class TextGenerator implements ChallengeGenerator
             $text .= $characters[random_int(0, count($characters) - 1)];
         }
 
+        $caseSensitive = (bool) config('wiz-captcha.case_sensitive', false);
+
         return new CaptchaChallenge(
             id: bin2hex(random_bytes(16)),
-            question: $text,
+            question: $caseSensitive ? $text : mb_strtolower($text),
             answer: $text,
-            caseSensitive: (bool) config('wiz-captcha.case_sensitive', false),
+            caseSensitive: $caseSensitive,
         );
     }
 }
