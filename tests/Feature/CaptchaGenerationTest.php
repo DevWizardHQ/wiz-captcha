@@ -25,9 +25,13 @@ it('displays lowercase text in the captcha image when case_sensitive is false', 
 it('preserves original casing in the captcha image when case_sensitive is true', function () {
     config(['wiz-captcha.case_sensitive' => true]);
 
-    $challenge = app(TextGenerator::class)->generate(config('wiz-captcha.presets.default'));
+    $challenge = app(TextGenerator::class)->generate(array_merge(
+        config('wiz-captcha.presets.default'),
+        ['characters' => 'ABC', 'length' => 3],
+    ));
 
-    expect($challenge->question)->toBe($challenge->answer);
+    expect($challenge->question)->toBe($challenge->answer)
+        ->and($challenge->question)->toBe(mb_strtoupper($challenge->question));
 });
 
 it('accepts uppercase input when case_sensitive is false', function () {
