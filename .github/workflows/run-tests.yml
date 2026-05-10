@@ -65,3 +65,7 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
+
+      - name: Audit dependencies
+        if: matrix.stability == 'prefer-stable' && matrix.os == 'ubuntu-latest' && matrix.php == '8.5' && matrix.laravel == '13.*'
+        run: composer audit --no-dev --format=plain

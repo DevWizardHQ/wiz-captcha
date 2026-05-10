@@ -82,6 +82,20 @@ $request->validate([
 ]);
 ```
 
+### Route Throttling
+
+CAPTCHA routes include throttling by default. You can tune it with:
+
+```env
+WIZ_CAPTCHA_ROUTE_THROTTLE=60,1
+```
+
+Set a full middleware string if needed:
+
+```env
+WIZ_CAPTCHA_ROUTE_THROTTLE=throttle:120,1
+```
+
 ## Testing
 
 ```bash
@@ -98,7 +112,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please review [our security policy](SECURITY.md) on how to report security vulnerabilities.
 
 ## Credits
 

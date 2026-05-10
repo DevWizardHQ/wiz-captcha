@@ -54,6 +54,7 @@ return [
         'enabled' => true,
         'prefix' => 'captcha',
         'middleware' => ['web'],
+        'throttle' => env('WIZ_CAPTCHA_ROUTE_THROTTLE', '60,1'),
     ],
 
     /*

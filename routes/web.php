@@ -7,7 +7,14 @@ if (! config('wiz-captcha.routes.enabled', true)) {
     return;
 }
 
-Route::middleware(config('wiz-captcha.routes.middleware', ['web']))
+$middleware = config('wiz-captcha.routes.middleware', ['web']);
+$throttle = config('wiz-captcha.routes.throttle', null);
+
+if (filled($throttle)) {
+    $middleware[] = str_contains($throttle, ':') ? $throttle : "throttle:{$throttle}";
+}
+
+Route::middleware($middleware)
     ->prefix(config('wiz-captcha.routes.prefix', 'captcha'))
     ->group(function () {
         Route::get('/api/{preset?}', [CaptchaController::class, 'api'])
