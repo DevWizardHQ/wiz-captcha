@@ -19,14 +19,13 @@
         "php": "^8.2",
         "ext-gd": "*",
         "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.0||^12.0||^13.0",
-        "illuminate/support": "^11.0||^12.0||^13.0",
-        "illuminate/cache": "^11.0||^12.0||^13.0",
-        "illuminate/routing": "^11.0||^12.0||^13.0",
-        "illuminate/validation": "^11.0||^12.0||^13.0"
+        "illuminate/contracts": "^12.0||^13.0",
+        "illuminate/support": "^12.0||^13.0",
+        "illuminate/cache": "^12.0||^13.0",
+        "illuminate/routing": "^12.0||^13.0",
+        "illuminate/validation": "^12.0||^13.0"
     },
     "require-dev": {
-        "evilmartians/lefthook": "^2.2",
         "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.8",
         "larastan/larastan": "^3.0",
@@ -56,12 +55,6 @@
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "post-install-cmd": [
-            "lefthook install || exit 0"
-        ],
-        "post-update-cmd": [
-            "lefthook install || exit 0"
-        ],
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "analyse": "vendor/bin/phpstan analyse --debug --no-progress",
         "test": "vendor/bin/pest",
